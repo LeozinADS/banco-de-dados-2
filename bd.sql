@@ -1,0 +1,65 @@
+
+
+CREATE TABLE usuarios (
+  IDUsuario INT PRIMARY KEY AUTO_INCREMENT,
+  Nome VARCHAR(100) NOT NULL,
+  Cadastro DATE NOT NULL,
+  CPF VARCHAR(14) UNIQUE NOT NULL,
+  Contato VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE livros (
+  IDLivro INT PRIMARY KEY AUTO_INCREMENT,
+  NomeLivro VARCHAR(225) NOT NULL,
+  Quantidade INT NOT NULL,
+  Disponibilidade BOOLEAN NOT NULL,
+  Genero VARCHAR(100),
+  Autor VARCHAR(100),
+  Categoria VARCHAR(100)
+);
+
+CREATE TABLE funcionarios (
+  IDFuncionario INT PRIMARY KEY AUTO_INCREMENT,
+  Nome VARCHAR(100) NOT NULL,
+  Cargo VARCHAR(100),
+  Contato VARCHAR(100)
+);
+
+CREATE TABLE emprestimos (
+  IDEmprestimo INT PRIMARY KEY AUTO_INCREMENT,
+  IDUsuario INT,
+  IDLivro INT,
+  DataEmprestimo DATE NOT NULL,
+  DataDevolucaoPrevista DATE NOT NULL,
+  DataDevolucaoReal DATE,
+  FOREIGN KEY (IDUsuario) REFERENCES usuarios(IDUsuario) ON DELETE CASCADE,
+  FOREIGN KEY (IDLivro) REFERENCES livros(IDLivro) ON DELETE CASCADE
+);
+
+CREATE TABLE multas (
+  IDMulta INT PRIMARY KEY AUTO_INCREMENT,
+  IDUsuario INT,
+  Valor DECIMAL(10,2) NOT NULL,
+  DataEmissao DATE NOT NULL,
+  FOREIGN KEY (IDUsuario) REFERENCES usuarios(IDUsuario) ON DELETE CASCADE
+);
+
+CREATE TABLE reservas (
+  IDReserva INT PRIMARY KEY AUTO_INCREMENT,
+  IDUsuario INT NOT NULL,
+  IDLivro INT NOT NULL,
+  DataReserva DATE NOT NULL,
+  ValidaAte DATETIME NOT NULL,
+  FOREIGN KEY (IDUsuario) REFERENCES usuarios(IDUsuario) ON DELETE CASCADE,
+  FOREIGN KEY (IDLivro) REFERENCES livros(IDLivro) ON DELETE CASCADE
+);
+
+CREATE TABLE historico_emprestimos (
+  IDHistorico INT PRIMARY KEY AUTO_INCREMENT,
+  IDUsuario INT NOT NULL,
+  IDLivro INT NOT NULL,
+  DataEmprestimo DATE NOT NULL,
+  DataDevolucao DATE,
+  FOREIGN KEY (IDUsuario) REFERENCES usuarios(IDUsuario) ON DELETE CASCADE,
+  FOREIGN KEY (IDLivro) REFERENCES livros(IDLivro) ON DELETE CASCADE
+);
